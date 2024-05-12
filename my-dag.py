@@ -1,7 +1,6 @@
 from airflow import DAG
 from airflow.operators.python_operator import PythonOperator
-from datetime import datetime
-import pandas as pd
+from datetime import datetime, timedelta
 import os
 
 default_args = {
@@ -11,23 +10,30 @@ default_args = {
     'email_on_failure': False,
     'email_on_retry': False,
     'retries': 1,
+    'dagrun_timeout': timedelta(days=1),
 }
+
 
 def extract():
     # Run two python files for extraction
-    os.system("python ../bbc_scrapper.csv")
-    os.system("python ../dawn_scrapper.csv")
+    os.chdir("~")
+    os.chdir("Assignment02")
+    os.system("pip install requests beautifulsoup4 pandas")
+    os.system("python3 bbc_scrapper.py")
+    os.system("python3 dawn_scrapper.py")
 
 def transform():
     # Run two python files for transformation
-    os.system("python ../bbc_scrapper_cleaned.csv")
-    os.system("python ../dawn_scrapper_cleaned.csv")
+    os.system("python3 cleaning_bbc_dataset.py")
+    os.system("python3 cleaning_dawn_dataset.py")
+    os.system("python3 combining_files.py")
 
 def load():
     # Run bash commands to load data to GDrive using DVC and push changes to Git
-    os.system("dvc add ../data/merged_data.csv")
-    os.system("dvc push")
-    os.system("git add .")
+    os.system("dvc add data\\merged_data.csv")
+    os.system("dvc push -r gdrive")
+    os.chdir("data")
+    os.system("git add merged_data.csv.dvc")
     os.system("git commit -m 'Update data'")
     os.system("git push")
 
