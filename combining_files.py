@@ -21,7 +21,7 @@ merged_df = pd.concat([df1, df2], ignore_index=True)
 merged_df.insert(0, 'ID', range(1, len(merged_df) + 1))
 
 # Save the new DataFrame to a CSV file
-output_path = 'merged_data.csv'  # Path for the new CSV file
+output_path = 'data/merged_data.csv'  # Path for the new CSV file
 merged_df.to_csv(output_path, index=False)
 
 # Display the merged DataFrame to check the result
