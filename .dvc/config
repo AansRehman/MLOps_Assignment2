@@ -1,4 +1,6 @@
 [core]
-    remote = storage
+    remote = myremote
 ['remote "storage"']
+    url = gdrive://135_4OATzaC85Tt9yj182e3m4vKpyAdgM
+['remote "myremote"']
     url = gdrive://135_4OATzaC85Tt9yj182e3m4vKpyAdgM
