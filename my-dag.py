@@ -10,8 +10,9 @@ default_args = {
     'email_on_failure': False,
     'email_on_retry': False,
     'retries': 1,
-    'dagrun_timeout': timedelta(days=1),
+    'dagrun_timeout': None,
 }
+task_execution_timeout = timedelta(hours=3)  # Change this as needed
 
 
 def extract():
@@ -19,8 +20,8 @@ def extract():
     os.chdir("~")
     os.chdir("Assignment02")
     os.system("pip install requests beautifulsoup4 pandas")
-    os.system("python3 bbc_scrapper.py")
-    os.system("python3 dawn_scrapper.py")
+    # os.system("python3 bbc_scrapper.py")
+    # os.system("python3 dawn_scrapper.py")
 
 def transform():
     # Run two python files for transformation
@@ -30,7 +31,7 @@ def transform():
 
 def load():
     # Run bash commands to load data to GDrive using DVC and push changes to Git
-    os.system("dvc add data\\merged_data.csv")
+    os.system("dvc add .\\data\\merged_data.csv")
     os.system("dvc push -r gdrive")
     os.chdir("data")
     os.system("git add merged_data.csv.dvc")
