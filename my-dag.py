@@ -17,11 +17,13 @@ task_execution_timeout = timedelta(hours=3)  # Change this as needed
 
 def extract():
     # Run two python files for extraction
-    os.chdir("~")
-    os.chdir("Assignment02")
-    os.system("pip install requests beautifulsoup4 pandas")
-    # os.system("python3 bbc_scrapper.py")
-    # os.system("python3 dawn_scrapper.py")
+    # os.chdir("~")
+    # os.chdir("Assignment02")
+    os.system("cd ~ && cd Assignment02")
+    # os.system("pip install requests beautifulsoup4 pandas")
+    os.system("python3 bbc_scrapper.py")
+    os.system("python3 dawn_scrapper.py")
+    # pass
 
 def transform():
     # Run two python files for transformation
@@ -31,12 +33,13 @@ def transform():
 
 def load():
     # Run bash commands to load data to GDrive using DVC and push changes to Git
-    os.system("dvc add .\\data\\merged_data.csv")
+    os.system("dvc add data/merged_data.csv")
     os.system("dvc push -r gdrive")
-    os.chdir("data")
+    os.system("cd data")
     os.system("git add merged_data.csv.dvc")
     os.system("git commit -m 'Update data'")
     os.system("git push")
+    # pass
 
 with DAG('my_dag', default_args=default_args, schedule_interval='@daily', catchup=False) as dag:
     extract_task = PythonOperator(
